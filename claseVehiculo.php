@@ -2,146 +2,312 @@
 
 class VEHICULO{
 
-	public $enceder = false;
-	public $apagar = true;
-	public $cinturonSeguridad = false;
-	private $llave = "123456";
-	public $encederParabrisa ;
-	public $encenderLuces;
-	public $recargarGasolina = 0 ;
+  public $enceder = false;
+  public $cinturonSeguridad = false;
+  public $encederParabrisa = false;
+  public $encenderLuces;
+  public $gasolina = 0;
+  private $llave = "123456";
 
-	/**
-		*Recarga Gasolina devuelve un valor Null
-		*para no Generar Error Php por pantalla
-		*cuando no está definido
-		*y retorna un valor
-	**/
-	public function recargarGasolina($Cargar = null){
-		$Cargar;
-		$this->recargarGasolina = $Cargar;
-		echo "Monto Recargado ". $Cargar."</br>";
+  /**
+    *Recarga Gasolina devuelve un valor Null
+    *para no Generar Error Php por pantalla
+    *cuando no está definido
+    *y retorna un valor
+  **/
+  public function recargarGasolina($Cargar = null){
+    $Cargar;
+    $this->gasolina = $Cargar;
+    echo "Monto Recargado ". $Cargar."</br>";
 
-		return $this->recargarGasolina;
-	}
+    return $this->gasolina;
+  }
 
-	public function cinturonSeguridad($cinturon = null){
-		$this->cinturonSeguridad = $cinturon;
-		return $this->cinturonSeguridad;
-	}
+  public function cinturonSeguridad($cinturon = null){
+    $this->cinturonSeguridad = $cinturon;
+    return $this->cinturonSeguridad;
+  }
 
-	public function encender($clave){
+  public function encender($clave){
 
-		if ($this->llave == $clave) {
-				echo "Clave Correcta"."</br>";
+    if($this->encender) return 'Este Vehiculo ya esta encendido';
 
-				if ($this->recargarGasolina > 0) {
-					echo "Tanque lleno"."</br>";
+    if ($this->llave == $clave) {
+        echo "Clave Correcta</br>";
 
-					if ($this->cinturonSeguridad == true) {
-							//$this->cinturonSeguridad = null;
-							echo "Cinturon Colocado"."</br>";
-							echo "Vehiculo Encendido"."</br>";
-							return $this->encender = true;
-					} else {
-							echo "Por favor colocarse el Cinturon";
-					}
+        if ($this->chequearGasolina()) {
+          echo "Tanque lleno</br>";
 
-				}else {
-					echo "<br>"."Tanque vacido, debe recargar"."</br>";
-				}
-		}else{
-			echo "Llave incorrrecta, Introducir de Nuevo la Llave";
-		}
-	}
+          if ($this->cinturonSeguridad == true) {
+              //$this->cinturonSeguridad = null;
+              echo "Cinturon Colocado</br>";
+              echo "Vehiculo Encendido</br>";
+              return $this->encender = true;
+          } else {
+              echo "Por favor colocarse el Cinturon";
+          }
 
-	public function apagar(){
-		$this->encender = null;
-		if ($this->encender == true){
+        }else {
+          echo "<br>Tanque vacio, debe recargar</br>";
+        }
+    }else{
+      echo "Llave incorrrecta, Introducir de Nuevo la Llave";
+    }
+  }
 
-				/*$this->apagar == false;*/
-				echo "<br>"."Vehiculo Se Apag&oacute;"."</br>";
-				return $this->encender = false;
+  public function apagar(){
+    if ($this->encender == true){
 
-		}else {
-				echo "<br>"."Vehiculo Apagado";
-			}
-	}
+        echo "Vehiculo Se Apag&oacute;";
+        return $this->encender = false;
 
-	public function vehiculoEnMarcha(){
-		//$this->encender = null;
-		if ($this->encender == false) {
-				echo "<br>"."Vehiculo Detenido"."<br>";
+    }else {
+        echo "Vehiculo ya se encuentra Apagado";
+      }
+  }
 
-		}else {
-			echo "<br>"."Vehiculo en MArcha"."<br>";
-		}
+  public function vehiculoEnMarcha(){
+    //$this->encender = null;
+    if ($this->encender == false) {
+        echo "<br>"."Vehiculo ya esta Detenido"."<br>";
 
-	}
+    }else {
+      echo "<br>"."Vehiculo en Marcha"."<br>";
+    }
 
-	public function encederParabrisa(){
-		if ($this->encender == true){
-				echo "<br>"."Encendiendo Limpia Parabrisa;"."</br>";
+  }
 
-		}else {
-				echo "<br>"."Vehiculo Apagado, No se Puede Encender Parabrisa";
-			}
-	}
+  public function encederParabrisa(){
+    if ($this->encender == true){
+        echo "<br>"."Encendiendo Limpia Parabrisa;"."</br>";
+        return $encederParabrisa = true;
+    }else {
+        echo "<br>"."Vehiculo Apagado, No se Puede Encender Parabrisa";
+      }
+  }
 
-/*	public function __set(){
-			echo "No definido";
-	}
+  public function apagarParabrisa(){
+    if ($this->encender == true){
+        echo "<br>Encendiendo Limpia Parabrisa</br>";
+        return $encederParabrisa = false;
+    }else {
+        echo "<br>Vehiculo Apagado, No se Puede Apagar Parabrisa</br>";
+      }
+  }
 
-		public function __call(){
-			echo "No definido";
-	}
-*/
+  public function __get($encender){
+    echo "No definido<br>";
+  }
+
+  public function __call($apagar,$otro){
+    echo "No definido<br>";
+  }
+
+  protected function chequearGasolina(){
+    if($this->gasolina <= 0){
+      $this->gasolina = 0;
+      return false;
+    }else{
+      return true;
+    }
+  }
 }
 
 class CAMION extends VEHICULO{
-		public $nombre = "";
-		public $modelo = "";
-		private $pasajeros = 0;
+    protected $nombre;
+    protected $modelo;
+    private $pasajeros = 0;
+
+    public function __construct($nombre, $modelo){
+      $this->nombre = $nombre;
+      $this->modelo = $modelo;
+    }
 
     public function pasajeros($cantidadPersona){
-        $this->pasajeros = $cantidadPersona;
+        $this->pasajeros += $cantidadPersona;
         echo 'Se han subido '.$cantidadPersona.' pasajeros <br />';
     }
 
-		public function __construct($nombre, $modelo){
-			$this->nombre = $nombre;
-			$this->modelo = $modelo;
-		}
+    public function monstrarDatos(){
+      echo $this->nombre."<br> "."Modelo del Veh&iacute;culo: ".$this->modelo."</br>";
+      echo "Existe en este {$this->modelo} {$this->pasajeros} pasajeros. <br>";
+    }
 
-		public function monstrarDatos(){
-			echo $this->nombre."<br> "."Modelo del Veh&iacute;culo: ".$this->modelo."</br>";
-		}
+    public function __destruct(){
 
-		public function __destruct(){
-
-			$this->nombre;
-			$this->modelo;
-		}
+      $this->nombre;
+      $this->modelo;
+      $this->$pasajeros;
+    }
 
 }
-
-
-$auto = new CAMION('Andres', 'AUTOBUS');
-
-$auto->encender(123456);
-
-/**
-	$auto->monstrarDatos();
-	$auto->recargarGasolina(100);
-	$auto->cinturonSeguridad(1);
-	$auto->encender(123456);
-	$auto->apagar();
-	$auto->vehiculoEnMarcha();
-	$auto->encender(123456);
-	$auto->pasajeros(15);
-
-	$auto->vehiculoEnMarcha();
-	$auto->encederParabrisa();
-**/
-
-
 ?>
+
+<html>
+  <head>
+    <title>Practica clases</title>
+  </head>
+  <body>
+    <div class="info objeto1">
+      <pre>$auto = new CAMION('Andres', 'Autobus');</pre>
+      <?php $auto = new CAMION('Andres', 'Autobus'); ?>
+
+      <pre>$auto->apagar();</pre>
+      <p>
+        <?php $auto->apagar(); ?>
+      </p>
+
+      <pre>$auto->encender(123456);</pre>
+      <p>
+        <?php $auto->encender(123456); ?>
+      </p>
+
+      <pre>$auto->apagar();</pre>
+      <p>
+        <?php $auto->apagar(); ?>
+      </p>
+
+      <pre>$auto->monstrarDatos();</pre>
+      <p>
+        <?php $auto->monstrarDatos(); ?>
+      </p>
+
+      <pre>$auto->RecargarGasolina(100);</pre>
+      <p>
+        <?php $auto->RecargarGasolina(100); ?>
+      </p>
+
+      <pre>$auto->cinturonSeguridad(1);</pre>
+      <p>
+        <?php $auto->cinturonSeguridad(1); ?>
+      </p>
+
+      <pre>$auto->encender(123456);</pre>
+      <p>
+        <?php $auto->encender(123456); ?>
+      </p>
+
+      <pre>$auto->apagar();</pre>
+      <p>
+        <?php $auto->apagar(); ?>
+      </p>
+
+      <pre>$auto->vehiculoEnMarcha();</pre>
+      <p>
+        <?php $auto->vehiculoEnMarcha(); ?>
+      </p>
+
+      <pre>$auto->encender(123456);</pre>
+      <p>
+        <?php $auto->encender(123456); ?>
+      </p>
+
+      <pre>$auto->pasajeros(15);</pre>
+      <p>
+        <?php $auto->pasajeros(15); ?>
+      </p>
+
+      <pre>$auto->vehiculoEnMarcha();</pre>
+      <p>
+        <?php $auto->vehiculoEnMarcha(); ?>
+      </p>
+
+      <pre>$auto->encederParabrisa();</pre>
+      <p>
+        <?php $auto->encederParabrisa(); ?>
+      </p>
+    </div>
+    <div class="info objeto2">
+      <pre>$auto = new CAMION('Bryan', 'Carrito de Helado');</pre>
+      <p>
+        <?php $auto = new CAMION('Bryan', 'Carrito de Helado'); ?>
+      </p>
+
+      <pre>$auto->encender(123456);</pre>
+      <p>
+        <?php $auto->encender(123456); ?>
+      </p>
+
+      <pre>$auto->monstrarDatos();</pre>
+      <p>
+        <?php $auto->monstrarDatos(); ?>
+      </p>
+
+      <pre>$auto->RecargarGasolina('a');</pre>
+      <p>
+        <?php $auto->RecargarGasolina('a'); ?>
+      </p>
+
+      <pre>$auto->cinturonSeguridad(0);</pre>
+      <p>
+        <?php $auto->cinturonSeguridad(0); ?>
+      </p>
+
+      <pre>$auto->vehiculoEnMarcha();</pre>
+      <p>
+        <?php $auto->vehiculoEnMarcha(); ?>
+      </p>
+
+      <pre>$auto->pasajeros(15);</pre>
+      <p>
+        <?php $auto->pasajeros(15); ?>
+      </p>
+
+      <pre>$auto->encederParabrisa();</pre>
+      <p>
+        <?php $auto->encederParabrisa(); ?>
+      </p>
+
+      <pre>$auto->apagarParabrisa();</pre>
+      <p>
+        <?php $auto->apagarParabrisa(); ?>
+      </p>
+    </div>
+    <div class="info objeto3">
+      <pre>$auto = new CAMION('Bryan', 'Metrobus');</pre>
+      <p>
+        <?php $auto = new CAMION('Alejandro', 'Metrobus'); ?>
+      </p>
+
+      <pre>$auto->encender(123456);</pre>
+      <p>
+        <?php $auto->encender(123456); ?>
+      </p>
+
+      <pre>$auto->monstrarDatos();</pre>
+      <p>
+        <?php $auto->monstrarDatos(); ?>
+      </p>
+
+      <pre>$auto->RecargarGasolina('a');</pre>
+      <p>
+        <?php $auto->RecargarGasolina('a'); ?>
+      </p>
+
+      <pre>$auto->cinturonSeguridad(0);</pre>
+      <p>
+        <?php $auto->cinturonSeguridad(0); ?>
+      </p>
+
+      <pre>$auto->vehiculoEnMarcha();</pre>
+      <p>
+        <?php $auto->vehiculoEnMarcha(); ?>
+      </p>
+
+      <pre>$auto->pasajeros(15);</pre>
+      <p>
+        <?php $auto->pasajeros(15); ?>
+      </p>
+
+      <pre>$auto->encederParabrisa();</pre>
+      <p>
+        <?php $auto->encederParabrisa(); ?>
+      </p>
+
+      <pre>$auto->apagarParabrisa();</pre>
+      <p>
+        <?php $auto->apagarParabrisa(); ?>
+      </p>
+    </div>
+  </body>
+</html>
