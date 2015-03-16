@@ -16,9 +16,12 @@ class VEHICULO{
     *y retorna un valor
   **/
   public function recargarGasolina($Cargar = null){
-    $Cargar;
-    $this->gasolina = $Cargar;
-    echo "Monto Recargado ". $Cargar."</br>";
+    if(ctype_digit($Cargar)){
+      $this->gasolina = $Cargar;
+      echo "Monto Recargado con valor {$Cargar}</br>";
+    }else{
+      echo "valor invalido para recargar gasolina";
+    }
 
     return $this->gasolina;
   }
@@ -124,8 +127,12 @@ class CAMION extends VEHICULO{
     }
 
     public function pasajeros($cantidadPersona){
+      if(ctype_digit($Cargar)){
         $this->pasajeros += $cantidadPersona;
         echo 'Se han subido '.$cantidadPersona.' pasajeros <br />';
+      }else{
+        echo 'Datos incorrectos para subir pasajero';
+      }
     }
 
     public function monstrarDatos(){
@@ -223,9 +230,9 @@ class CAMION extends VEHICULO{
         <?php $auto = new CAMION('Bryan', 'Carrito de Helado'); ?>
       </p>
 
-      <pre>$auto->encender(123456);</pre>
+      <pre>$auto->encender(321231);</pre>
       <p>
-        <?php $auto->encender(123456); ?>
+        <?php $auto->encender(321231); ?>
       </p>
 
       <pre>$auto->monstrarDatos();</pre>
@@ -248,9 +255,9 @@ class CAMION extends VEHICULO{
         <?php $auto->vehiculoEnMarcha(); ?>
       </p>
 
-      <pre>$auto->pasajeros(15);</pre>
+      <pre>$auto->pasajeros('x');</pre>
       <p>
-        <?php $auto->pasajeros(15); ?>
+        <?php $auto->pasajeros('x'); ?>
       </p>
 
       <pre>$auto->encederParabrisa();</pre>
