@@ -81,22 +81,24 @@ class VEHICULO{
   public function encender($clave){
 
     if($this->chequearValidezLlave()){
-      if($this->encender) echo 'Este Vehiculo ya esta encendido.</br>'; return false;
-
+      if($this->encender){
+        echo 'Este Vehiculo ya esta encendido.</br>';
+        return false;
+      }
       if ($this->llave == $clave) {
-          echo "Clave Correcta.</br>";
-          if ($this->chequearGasolina()) {
-            echo "Tanque de Gasolina no esta vacio!</br>";
-            if ($this->chequearCinturon()) {
-              echo "Cinturon Colocado.</br>";
-              echo "Vehiculo Encendido.</br>";
-              return $this->encender = true;
-            } else {
-              echo "Por favor colocarse el Cinturon.</br>";
-            }
-          }else {
-            echo "<br>Tanque de gasolina vacio, debe recargar.</br>";
+        echo "Clave Correcta.</br>";
+        if ($this->chequearGasolina()) {
+          echo "Tanque de Gasolina no esta vacio!</br>";
+          if ($this->chequearCinturon()) {
+            echo "Cinturon Colocado.</br>";
+            echo "Vehiculo Encendido.</br>";
+            return $this->encender = true;
+          } else {
+            echo "Por favor colocarse el Cinturon.</br>";
           }
+        }else {
+          echo "<br>Tanque de gasolina vacio, debe recargar.</br>";
+        }
       }else{
         echo "Llave incorrrecta, Introducir de Nuevo la Llave";
       }
@@ -118,10 +120,12 @@ class VEHICULO{
   }
 
   public function vehiculoEnMarcha(){
-    if ($this->encender == false) {
-      echo "<br>Vehiculo ya esta Detenido<br>";
-    }else {
-      echo "<br>Vehiculo en Marcha<br>";
+    if ($this->chequearValidezLlave()) {
+      if ($this->encender == false) {
+        echo "Vehiculo esta apagado, no se puede poner en marcha.<br>";
+      }else {
+        echo "Vehiculo en Marcha!<br>";
+      }
     }
   }
 
@@ -139,10 +143,10 @@ class VEHICULO{
   public function apagarParabrisa(){
     if($this->chequearValidezLlave()){
       if ($this->encender == true){
-        echo "<br>Encendiendo Limpia Parabrisa</br>";
+        echo "Apagado Limpia Parabrisa</br>";
         return $encederParabrisa = false;
       }else {
-        echo "<br>Vehiculo Apagado, No se Puede Apagar Parabrisa</br>";
+        echo "Vehiculo Apagado, No se Puede Apagar Parabrisa</br>";
       }
     }
   }
@@ -218,12 +222,18 @@ class CAMION extends VEHICULO{
     $this->modelo = $modelo;
   }
 
-  public function pasajeros($cantidadPersona){
-    if(is_numeric($cantidadPersona)){
-      $this->pasajeros += $cantidadPersona;
-      echo 'Se han subido '.$cantidadPersona.' pasajeros <br />';
-    }else{
-      echo "Datos {$cantidadPersona} son incorrectos para subir pasajeros.";
+  public function pasajeros($cantidadPersona = null){
+    if ($this->chequearValidezLlave()) {
+      if ($this->encender) {
+        if(is_numeric($cantidadPersona)){
+          $this->pasajeros += $cantidadPersona;
+          echo 'Se han subido '.$cantidadPersona.' pasajeros <br />';
+        }else{
+          echo "Datos {$cantidadPersona} son incorrectos para subir pasajeros.";
+        }
+      }else{
+        echo "Los pasajeros no pueden ingresar al vehiculo porque se encuentra apagado y no abren las puertas.<br>";
+      }
     }
   }
 
