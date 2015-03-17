@@ -6,8 +6,8 @@
   </head>
   <body>
     <div class="info objeto1">
-      <pre>$auto = new CAMION('Andres', 'Autobus');</pre>
-      <?php $auto = new CAMION('Andres', 'Autobus'); ?>
+      <pre>$auto = new CAMION('Andres', 'Autobus', '123456');</pre>
+      <?php $auto = new CAMION('Andres', 'Autobus', '123456'); ?>
       <pre>$auto->apagar();</pre>
       <p>
         <?php $auto->apagar(); ?>
@@ -19,11 +19,6 @@
       </p>
 
       <?php //die(var_dump($auto)) ?>
-
-      <pre>$auto->apagar();</pre>
-      <p>
-        <?php $auto->apagar(); ?>
-      </p>
 
       <pre>$auto->monstrarDatos();</pre>
       <p>
@@ -40,34 +35,14 @@
         <?php $auto->cinturonSeguridad(1); ?>
       </p>
 
-      <pre>$auto->encender(123456);</pre>
-      <p>
-        <?php $auto->encender(123456); ?>
-      </p>
-
-      <pre>$auto->apagar();</pre>
-      <p>
-        <?php $auto->apagar(); ?>
-      </p>
-
       <pre>$auto->vehiculoEnMarcha();</pre>
       <p>
         <?php $auto->vehiculoEnMarcha(); ?>
-      </p>
-
-      <pre>$auto->encender(123456);</pre>
-      <p>
-        <?php $auto->encender(123456); ?>
       </p>
 
       <pre>$auto->pasajeros(15);</pre>
       <p>
         <?php $auto->pasajeros(15); ?>
-      </p>
-
-      <pre>$auto->vehiculoEnMarcha();</pre>
-      <p>
-        <?php $auto->vehiculoEnMarcha(); ?>
       </p>
 
       <pre>$auto->encederParabrisa();</pre>

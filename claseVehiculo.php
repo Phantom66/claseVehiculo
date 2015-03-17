@@ -50,23 +50,26 @@ class VEHICULO{
    * @param int el monto a recargar
    */
   public function recargarGasolina($monto = null){
+    if($this->chequearValidezLlave()){
+      if(is_numeric($monto) && $monto > 0){
+        $this->gasolina = $monto;
+        echo "Monto Recargado con valor {$monto}.</br>";
+      }else{
+        echo "valor {$monto} es invalido para recargar gasolina.</br>";
+        return null;
+      }
 
-    if(is_numeric($monto) && $monto > 0){
-      $this->gasolina = $monto;
-      echo "Monto Recargado con valor {$monto}.</br>";
-    }else{
-      echo "valor {$monto} es invalido para recargar gasolina.</br>";
-      return null;
+      return $this->gasolina;
     }
-
-    return $this->gasolina;
   }
 
   /**
    * Metodo que sirve para poner o quitar cinturon.
    */
   public function cinturonSeguridad(){
-    return $this->cinturonSwiche();
+    if($this->chequearValidezLlave()){
+      return $this->cinturonSwiche();
+    }
   }
 
   /**
@@ -77,34 +80,40 @@ class VEHICULO{
    */
   public function encender($clave){
 
-    if($this->llave === NULL) echo 'Este Vehiculo no posee llave!</br>'; return false;
-    if($this->encender) echo 'Este Vehiculo ya esta encendido.</br>'; return false;
+    if($this->chequearValidezLlave()){
+      if($this->encender) echo 'Este Vehiculo ya esta encendido.</br>'; return false;
 
-    if ($this->llave == $clave) {
-        echo "Clave Correcta.</br>";
-        if ($this->chequearGasolina()) {
-          echo "Tanque de Gasolina no esta vacio!</br>";
-          if ($this->chequearCinturon()) {
-            echo "Cinturon Colocado.</br>";
-            echo "Vehiculo Encendido.</br>";
-            return $this->encender = true;
-          } else {
-            echo "Por favor colocarse el Cinturon.</br>";
+      if ($this->llave == $clave) {
+          echo "Clave Correcta.</br>";
+          if ($this->chequearGasolina()) {
+            echo "Tanque de Gasolina no esta vacio!</br>";
+            if ($this->chequearCinturon()) {
+              echo "Cinturon Colocado.</br>";
+              echo "Vehiculo Encendido.</br>";
+              return $this->encender = true;
+            } else {
+              echo "Por favor colocarse el Cinturon.</br>";
+            }
+          }else {
+            echo "<br>Tanque de gasolina vacio, debe recargar.</br>";
           }
-        }else {
-          echo "<br>Tanque de gasolina vacio, debe recargar.</br>";
-        }
-    }else{
-      echo "Llave incorrrecta, Introducir de Nuevo la Llave";
+      }else{
+        echo "Llave incorrrecta, Introducir de Nuevo la Llave";
+      }
     }
+
   }
 
   public function apagar(){
-    if ($this->encender == true){
-      echo "Vehiculo Se Apag&oacute;";
-      return $this->encender = false;
-    }else {
-      echo "Vehiculo ya se encuentra Apagado";
+    if ($this->chequearValidezLlave()) {
+      if ($this->encender){
+        echo "Vehiculo Se Apag&oacute;";
+        return $this->encender = false;
+      }else {
+        echo "Vehiculo ya se encuentra Apagado";
+      }
+    }else{
+      echo 'Su llave no es correcta, no se puede apagar vehiculo.<br>';
     }
   }
 
@@ -117,21 +126,25 @@ class VEHICULO{
   }
 
   public function encederParabrisa(){
-    if ($this->encender == true){
+    if($this->chequearValidezLlave()){
+      if ($this->encender == true){
         echo "Encendiendo Limpia Parabrisa</br>";
         return $encederParabrisa = true;
-    }else {
+      }else {
         echo "Vehiculo Apagado, No se Puede Encender Parabrisa";
       }
+    }
   }
 
   public function apagarParabrisa(){
-    if ($this->encender == true){
+    if($this->chequearValidezLlave()){
+      if ($this->encender == true){
         echo "<br>Encendiendo Limpia Parabrisa</br>";
         return $encederParabrisa = false;
-    }else {
+      }else {
         echo "<br>Vehiculo Apagado, No se Puede Apagar Parabrisa</br>";
       }
+    }
   }
 
   /**
@@ -155,8 +168,10 @@ class VEHICULO{
   protected function cinturonSwiche(){
     if( isset($this->cinturon) ){
       if($this->cinturon){
+        echo 'cinturon desactivado.<br>';
         return $this->cinturon = false;
       }
+      echo 'cinturon activado.<br>';
       return $this->cinturon = true;
     }else{
       $this->cinturon = false;
@@ -168,6 +183,18 @@ class VEHICULO{
     return false;
   }
 
+  /**
+   * se chequea si la llave del vehiculo ya fue o no iniciada
+   */
+  protected function chequearValidezLlave(){
+    if($this->llave) return true;
+    echo 'Este Vehiculo no posee llave!</br>';
+    return false;
+  }
+
+  /**
+   * se ven todos los atributos de la case y hace un simple echo
+   */
   protected function iterarAtributos(){
     foreach($this as $atributo => $valor){
       if ($valor) {
@@ -185,8 +212,8 @@ class CAMION extends VEHICULO{
   protected $modelo;
   private $pasajeros = 0;
 
-  public function __construct($nombre, $modelo){
-    parent::__construct();
+  public function __construct($nombre, $modelo, $llave = null){
+    parent::__construct($llave);
     $this->nombre = $nombre;
     $this->modelo = $modelo;
   }
