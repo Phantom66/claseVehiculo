@@ -78,21 +78,21 @@ class VEHICULO{
   public function encender($clave){
 
     if($this->llave === NULL) echo 'Este Vehiculo no posee llave!</br>'; return false;
-    if($this->encender) echo 'Este Vehiculo ya esta encendido</br>'; return false;
+    if($this->encender) echo 'Este Vehiculo ya esta encendido.</br>'; return false;
 
     if ($this->llave == $clave) {
-        echo "Clave Correcta</br>";
+        echo "Clave Correcta.</br>";
         if ($this->chequearGasolina()) {
           echo "Tanque de Gasolina no esta vacio!</br>";
           if ($this->chequearCinturon()) {
-            echo "Cinturon Colocado</br>";
-            echo "Vehiculo Encendido</br>";
+            echo "Cinturon Colocado.</br>";
+            echo "Vehiculo Encendido.</br>";
             return $this->encender = true;
           } else {
-            echo "Por favor colocarse el Cinturon";
+            echo "Por favor colocarse el Cinturon.</br>";
           }
         }else {
-          echo "<br>Tanque vacio, debe recargar</br>";
+          echo "<br>Tanque de gasolina vacio, debe recargar.</br>";
         }
     }else{
       echo "Llave incorrrecta, Introducir de Nuevo la Llave";
@@ -109,22 +109,19 @@ class VEHICULO{
   }
 
   public function vehiculoEnMarcha(){
-    //$this->encender = null;
     if ($this->encender == false) {
-        echo "<br>"."Vehiculo ya esta Detenido"."<br>";
-
+      echo "<br>Vehiculo ya esta Detenido<br>";
     }else {
-      echo "<br>"."Vehiculo en Marcha"."<br>";
+      echo "<br>Vehiculo en Marcha<br>";
     }
-
   }
 
   public function encederParabrisa(){
     if ($this->encender == true){
-        echo "<br>"."Encendiendo Limpia Parabrisa;"."</br>";
+        echo "Encendiendo Limpia Parabrisa</br>";
         return $encederParabrisa = true;
     }else {
-        echo "<br>"."Vehiculo Apagado, No se Puede Encender Parabrisa";
+        echo "Vehiculo Apagado, No se Puede Encender Parabrisa";
       }
   }
 
@@ -170,38 +167,50 @@ class VEHICULO{
     if($this->cinturon) return true;
     return false;
   }
+
+  protected function iterarAtributos(){
+    foreach($this as $atributo => $valor){
+      if ($valor) {
+        echo "{$atributo} activo: {$valor}<br>";
+      }else{
+        echo "{$atributo} inactivo<br>";
+      }
+    }
+    return true;
+  }
 }
 
 class CAMION extends VEHICULO{
-    protected $nombre;
-    protected $modelo;
-    private $pasajeros = 0;
+  protected $nombre;
+  protected $modelo;
+  private $pasajeros = 0;
 
-    public function __construct($nombre, $modelo){
-      parent::__construct();
-      $this->nombre = $nombre;
-      $this->modelo = $modelo;
-    }
+  public function __construct($nombre, $modelo){
+    parent::__construct();
+    $this->nombre = $nombre;
+    $this->modelo = $modelo;
+  }
 
-    public function pasajeros($cantidadPersona){
-      if(is_numeric($cantidadPersona)){
-        $this->pasajeros += $cantidadPersona;
-        echo 'Se han subido '.$cantidadPersona.' pasajeros <br />';
-      }else{
-        echo "Datos {$cantidadPersona} son incorrectos para subir pasajeros.";
-      }
+  public function pasajeros($cantidadPersona){
+    if(is_numeric($cantidadPersona)){
+      $this->pasajeros += $cantidadPersona;
+      echo 'Se han subido '.$cantidadPersona.' pasajeros <br />';
+    }else{
+      echo "Datos {$cantidadPersona} son incorrectos para subir pasajeros.";
     }
+  }
 
-    public function monstrarDatos(){
-      echo $this->nombre."<br> "."Modelo del Veh&iacute;culo: ".$this->modelo."</br>";
-      echo "Existe en este {$this->modelo} {$this->pasajeros} pasajeros. <br>";
-    }
+  public function monstrarDatos(){
+    $this->iterarAtributos();
+    echo $this->nombre."<br> "."Modelo del Veh&iacute;culo: ".$this->modelo."</br>";
+    echo "Existe en este {$this->modelo} {$this->pasajeros} pasajeros. <br>";
+  }
 
-    public function __destruct(){
-      $this->nombre;
-      $this->modelo;
-      $this->pasajeros;
-    }
+  public function __destruct(){
+    $this->nombre;
+    $this->modelo;
+    $this->pasajeros;
+  }
 
 }
 ?>
