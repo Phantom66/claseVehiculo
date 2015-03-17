@@ -2,33 +2,48 @@
 
 class VEHICULO{
 
-  public $enceder = false;
-  public $cinturonSeguridad = false;
-  public $encederParabrisa = false;
-  public $encenderLuces;
-  public $gasolina = 0;
+  private $enceder;
+  private $cinturon;
+  private $parabrisa;
+  private $luces;
+  private $gasolina;
   private $llave = "123456";
 
   /**
-    *Recarga Gasolina devuelve un valor Null
-    *para no Generar Error Php por pantalla
-    *cuando no está definido
-    *y retorna un valor
-  **/
-  public function recargarGasolina($Cargar = null){
-    if(ctype_digit($Cargar)){
-      $this->gasolina = $Cargar;
-      echo "Monto Recargado con valor {$Cargar}</br>";
+   * Funciones magicas
+   */
+  public function __get($valor){
+    echo "El Atributo {$valor}, no existe!</br>";
+  }
+
+  public function __call($metodo, $paramentro){
+    echo "El metodo {$metodo} o el parametro {$paramentro} no existen!</br>";
+  }
+
+  /**
+   * Recarga Gasolina devuelve un valor Null
+   * para no Generar Error Php por pantalla
+   * cuando no está definido
+   * y retorna un valor
+   */
+  public function recargarGasolina($monto = null){
+
+    if(ctype_digit($monto) and $monto > 0){
+      $this->gasolina = $monto;
+      echo "Monto Recargado con valor {$monto}.</br>";
     }else{
-      echo "valor invalido para recargar gasolina";
+      echo "valor {$monto} es invalido para recargar gasolina.</br>";
+      return null;
     }
 
     return $this->gasolina;
   }
 
-  public function cinturonSeguridad($cinturon = null){
-    $this->cinturonSeguridad = $cinturon;
-    return $this->cinturonSeguridad;
+  /**
+   * Metodo que sirve para poner o quitar cinturon.
+   */
+  public function cinturonSeguridad(){
+    return $this->cinturonSwiche();
   }
 
   public function encender($clave){
@@ -98,14 +113,15 @@ class VEHICULO{
       }
   }
 
-  public function __get($encender){
-    echo "No definido<br>";
-  }
+  /**
+   * FUNCIONES PROTEGIDAS
+   */
 
-  public function __call($apagar,$otro){
-    echo "No definido<br>";
-  }
-
+  /**
+   * chequea la gasolina en la clase.
+   *
+   * @return boolean
+   */
   protected function chequearGasolina(){
     if($this->gasolina <= 0){
       $this->gasolina = 0;
@@ -113,6 +129,10 @@ class VEHICULO{
     }else{
       return true;
     }
+  }
+
+  protected function cinturonSwiche(){
+    
   }
 }
 
