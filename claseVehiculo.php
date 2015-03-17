@@ -132,7 +132,14 @@ class VEHICULO{
   }
 
   protected function cinturonSwiche(){
-    
+    if( isset($this->cinturon) ){
+      if($this->cinturon){
+        return $this->cinturon = false;
+      }
+      return $this->cinturon = true;
+    }else{
+      $this->cinturon = false;
+    }
   }
 }
 
