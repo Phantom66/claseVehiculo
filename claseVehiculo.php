@@ -14,7 +14,8 @@ class VEHICULO{
    */
 
   /**
-   * @param mixed la "llave" para encender el vehiculo
+   * [__construct]
+   * @param mixed $llave la "llave" del vehiculo.
    */
   public function __construct($llave = null){
     $this->enceder   = false;
@@ -42,12 +43,16 @@ class VEHICULO{
   }
 
   /**
-   * Recarga Gasolina devuelve un valor Null
-   * para no Generar Error Php por pantalla
-   * cuando no está definido
+   * recarga el tanque de gasolina segun el valor.
+   *
+   * @internal (esto creo que esta solucionado) Recarga Gasolina
+   * devuelve un valor Null para no Generar
+   * Error Php por pantalla cuando no está definido
    * y retorna un valor
    *
-   * @param int el monto a recargar
+   * @param integer $monto el monto a recargar
+   *
+   * @return boolean
    */
   public function recargarGasolina($monto = null){
     if($this->chequearValidezLlave()){
@@ -58,13 +63,14 @@ class VEHICULO{
         echo "valor {$monto} es invalido para recargar gasolina.</br>";
         return null;
       }
-
       return $this->gasolina;
     }
   }
 
   /**
    * Metodo que sirve para poner o quitar cinturon.
+   *
+   * @return $this->cinturonSwiche()
    */
   public function cinturonSeguridad(){
     if($this->chequearValidezLlave()){
@@ -75,7 +81,7 @@ class VEHICULO{
   /**
    * chequea si la llave es correcta y tambien chequea
    * si la gasolina, cinturon estan validos
-
+   *
    * @param mixed la "llave" a comparar.
    */
   public function encender($clave){
@@ -106,6 +112,10 @@ class VEHICULO{
 
   }
 
+  /**
+   * se chequea si el vehiculo esta prendido para apagarlo.
+   * @return boolean
+   */
   public function apagar(){
     if ($this->chequearValidezLlave()) {
       if ($this->encender){
@@ -113,12 +123,18 @@ class VEHICULO{
         return $this->encender = false;
       }else {
         echo "Vehiculo ya se encuentra Apagado";
+        return false;
       }
     }else{
       echo 'Su llave no es correcta, no se puede apagar vehiculo.<br>';
+      return false;
     }
   }
 
+  /**
+   * pone el vehiculo en marcha
+   * @return void
+   */
   public function vehiculoEnMarcha(){
     if ($this->chequearValidezLlave()) {
       if ($this->encender == false) {
@@ -129,6 +145,10 @@ class VEHICULO{
     }
   }
 
+  /**
+   * chequea si el vehiculo esta encendido y prende el parabrisa.
+   * @return boolean
+   */
   public function encederParabrisa(){
     if($this->chequearValidezLlave()){
       if ($this->encender == true){
@@ -136,10 +156,15 @@ class VEHICULO{
         return $encederParabrisa = true;
       }else {
         echo "Vehiculo Apagado, No se Puede Encender Parabrisa";
+        return false;
       }
     }
   }
 
+  /**
+   * chequea si el vehiculo esta encendido y apaga el parabrisa.
+   * @return boolean
+   */
   public function apagarParabrisa(){
     if($this->chequearValidezLlave()){
       if ($this->encender == true){
@@ -147,6 +172,7 @@ class VEHICULO{
         return $encederParabrisa = false;
       }else {
         echo "Vehiculo Apagado, No se Puede Apagar Parabrisa</br>";
+        return false;
       }
     }
   }
@@ -169,6 +195,11 @@ class VEHICULO{
     }
   }
 
+  /**
+   * funciona como switch para el cinturon de seguridad.
+   *
+   * @return boolean
+   */
   protected function cinturonSwiche(){
     if( isset($this->cinturon) ){
       if($this->cinturon){
@@ -182,6 +213,11 @@ class VEHICULO{
     }
   }
 
+  /**
+   * chequea si el cinturon esta puesto o no.
+   *
+   * @return boolean
+   */
   protected function chequearCinturon(){
     if($this->cinturon) return true;
     return false;
@@ -189,6 +225,8 @@ class VEHICULO{
 
   /**
    * se chequea si la llave del vehiculo ya fue o no iniciada
+   *
+   * @return boolean
    */
   protected function chequearValidezLlave(){
     if($this->llave) return true;
@@ -198,6 +236,8 @@ class VEHICULO{
 
   /**
    * se ven todos los atributos de la case y hace un simple echo
+   *
+   * @return boolean
    */
   protected function iterarAtributos(){
     foreach($this as $atributo => $valor){
@@ -212,16 +252,35 @@ class VEHICULO{
 }
 
 class CAMION extends VEHICULO{
+
   protected $nombre;
   protected $modelo;
   private $pasajeros = 0;
 
+  /**
+   * [__construct]
+   * @param string $nombre  el nombre del vehiculo.
+   * @param mixed  $modelo  el modelo.
+   * @param mixed  $llave   la "llave" del vehiculo.
+   */
   public function __construct($nombre, $modelo, $llave = null){
     parent::__construct($llave);
     $this->nombre = $nombre;
     $this->modelo = $modelo;
   }
 
+  public function __destruct(){
+    $this->nombre;
+    $this->modelo;
+    $this->pasajeros;
+  }
+
+  /**
+   * sirve para añadir pasajeros al camion.
+   *
+   * @param integer $cantidadPersona el numero de personas a entrar o salir.
+   * @return void
+   */
   public function pasajeros($cantidadPersona = null){
     if ($this->chequearValidezLlave()) {
       if ($this->encender) {
@@ -237,17 +296,13 @@ class CAMION extends VEHICULO{
     }
   }
 
+  /**
+   * imprime atributos de la instancia.
+   * @return void
+   */
   public function monstrarDatos(){
     $this->iterarAtributos();
     echo $this->nombre."<br> "."Modelo del Veh&iacute;culo: ".$this->modelo."</br>";
     echo "Existe en este {$this->modelo} {$this->pasajeros} pasajeros. <br>";
   }
-
-  public function __destruct(){
-    $this->nombre;
-    $this->modelo;
-    $this->pasajeros;
-  }
-
 }
-?>
